@@ -11,6 +11,27 @@ design patterns.
 Also, everyone is welcome to join the fun.
 """
 
+from IPython.display import Markdown, display
+import re
+
+def pprint_sql(query = ''):
+    """
+    Print the visualization of a formatted SQL query in a Jupyter Notebook.
+    
+    Params:
+    ------
+    query: str, default = ''
+        The SQL query to be formatted and printed in Jupyter Notebook.
+    
+    
+    Future improvements: 
+        - Accept any query-like language.
+        - Automatically indent code
+    """
+     
+    display(Markdown(f'''```mysql\n {query}```'''))
+    
+    return
 
 def loop2compr(forloop = ''):
     """
@@ -35,17 +56,30 @@ def loop2compr(forloop = ''):
     -------
         String containing the list-comprehension of a given for-loop
     """
-
+    # Tokens
     content_pattern = r'append(.*)'
     list_pattern = r'(\w+.?\d?\(?\)?).append'
     item_pattern = r'for (\w\d*\.?\w*\(?\'?\w*\d*\'?\)?)'
     iterator_pattern = r'in (\w+\.?\d?):'
-    condition_pattern = r'(if .*):'
-
-    content = re.findall(pattern, text)
+    condition_pattern = r'if (.*?):'
+   
+    # Parser
+    content = re.findall(content_pattern, text)
     list_result = re.findall(list_pattern, text)
     item = re.findall(item_pattern, text)
     iterator = re.findall(iterator_pattern, text)
     condition = re.findall(condition_pattern, text)
 
-    
+    parsed_list = [
+            ['['], 
+            [i for i in content], 
+            [f'for {i} in {j} ' for (i,j) in zip(item,iterator) ],
+            [f'if {i}' for i in condition],
+            [']'] 
+        ]
+
+    # Code Generator
+    print(" ".join([j for i in foo for j in i]))
+
+
+
