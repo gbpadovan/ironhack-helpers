@@ -23,7 +23,9 @@ def pprint_sql(query = ''):
     query: str, default = ''
         The SQL query to be formatted and printed in Jupyter Notebook.
     
-    
+    Usage:
+        pprint_sql('SELECT * FROM TABLE WHERE product_id = 1') 
+
     Future improvements: 
         - Accept any query-like language.
         - Automatically indent code
@@ -44,8 +46,12 @@ def loop2compr(forloop = ''):
                                        for j in myOtherList: ...' )
         - items in a for containing numbers (ex.: 'for i2 in myList:')
         - results stored as an append in a list (ex.: 'myList.append(i)') 
-        - 
-
+        
+    Usage:
+        text = 'for i in range(10):
+                    for j in range(20):
+                        mylist.append( i * j )'
+        loop2compr(text)
 
     Params:
     ------
