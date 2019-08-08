@@ -23,7 +23,9 @@ def pprint_sql(query = ''):
     query: str, default = ''
         The SQL query to be formatted and printed in Jupyter Notebook.
     
-    
+    Usage:
+        pprint_sql('SELECT * FROM TABLE WHERE product_id = 1') 
+
     Future improvements: 
         - Accept any query-like language.
         - Automatically indent code
@@ -44,8 +46,12 @@ def loop2compr(forloop = ''):
                                        for j in myOtherList: ...' )
         - items in a for containing numbers (ex.: 'for i2 in myList:')
         - results stored as an append in a list (ex.: 'myList.append(i)') 
-        - 
-
+        
+    Usage:
+        text = 'for i in range(10):
+                    for j in range(20):
+                        mylist.append( i * j )'
+        loop2compr(text)
 
     Params:
     ------
@@ -81,13 +87,25 @@ def loop2compr(forloop = ''):
     # Code Generator
     print(" ".join([j for i in foo for j in i]))
 
-def renamecoldf(data_frame):
+
+def normalize_cols(df, inplace=False):
     """
-    This function changes the name of each Data Frame column by replacing whitespace with underline and all letters in lower case.
-    Parameter = Pandas DataFrame 
-    """
+    Normalize column names in a dataframe.
+
+    This function changes the name of each Data Frame column replacing 
+    whitespace with underline (except at word ends, where it is stripped) 
+    and all letters in lower case.
     
-    _lst =[]
-    for col in data_frame.columns:
-        _lst.append(col.replace(' ','_').lower())        
-    data_frame.columns = _lst
+    Params 
+    ------
+        df: pandas DataFrame 
+            Dataframe for the column name normalization            
+        inplace: bool, optional
+            Whether to return a new dataframe containing the changes or 
+            to make the changes in the dataframe itself.
+    """
+    col_names = [ col.strip().replace(' ','_').lower() for col in df.columns ]
+    mapper = dict(zip(df.columns, col_names))
+    
+    return df.rename(columns=mapper, inplace=inplace)
+
